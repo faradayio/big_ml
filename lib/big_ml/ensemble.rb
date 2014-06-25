@@ -29,7 +29,7 @@ module BigML
           arguments[:number_of_models] = number_of_models
         end
         response = client.post("/#{resource_name}", options, arguments)
-        self.new(response) if response.success?
+        self.new(response) if response.success? or raise(response)
       end
     end
   end
