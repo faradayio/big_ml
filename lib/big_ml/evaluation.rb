@@ -16,7 +16,7 @@ module BigML
     class << self
       def create(model, dataset, options = {})
         response = client.post("/#{resource_name}", {}, { model: model, dataset: dataset }.merge!(options))
-        self.new(response) if response.success?
+        self.new(response) if response.success? or raise(response.to_s)
       end
     end
   end
