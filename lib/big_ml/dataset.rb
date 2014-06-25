@@ -16,8 +16,15 @@ module BigML
     end
 
     class << self
-      def create(source, options = {})
-        response = client.post("/#{resource_name}", options, { :source => source })
+      def create(source_or_dataset, options = {}, arguments = {})
+        if source_or_dataset =~ /^source/
+          arguments[:source] = source_or_dataset
+        elsif source_or_dataset =~ /^dataset/
+          arguments[:origin_dataset] = source_or_dataset
+        else
+          raise ArgumentError, "Expected source or dataset, got #{source_or_dataset}"
+        end
+        response = client.post("/#{resource_name}", options, arguments)
         self.new(response) if response.success?
       end
     end

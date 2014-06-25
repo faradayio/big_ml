@@ -1,4 +1,5 @@
 require "spec_helper"
+require 'pry'
 
 describe BigML::Dataset, :vcr do
 
@@ -64,6 +65,15 @@ describe BigML::Dataset, :vcr do
       model = dataset.to_model
       expect(model).to be_instance_of?(BigML::Model)
       expect(model.code).to eq(201)
+    end
+  end
+  describe "one dataset from another dataset" do
+    let(:source) { BigML::Source.create "spec/fixtures/iris.csv" }
+    let(:first_dataset) { BigML::Dataset.create source.wait_for_ready.resource }
+    let(:second_dataset) { BigML::Dataset.create first_dataset.wait_for_ready.resource }
+
+    it "was created successfully" do
+      expect(second_dataset.code).to eq(201)
     end
   end
 end
