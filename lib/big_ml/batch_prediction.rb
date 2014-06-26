@@ -40,7 +40,7 @@ module BigML
       def download_to_tmp_path(id)
         tmp_path = File.join Dir.tmpdir, "#{rand.to_s}.csv"
         uri = URI("https://bigml.io/andromeda/#{resource_name}/#{id}/download")
-        uri.query = URI.encode_www_form credentials
+        uri.query = URI.encode_www_form client.credentials
         Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
           request = Net::HTTP::Get.new uri.request_uri
           http.request request do |response|
