@@ -13,7 +13,10 @@ module BigML
 
     class << self
       def create(model_or_ensemble, options = {})
-        response = client.post("/#{resource_name}", {}, { model_or_ensemble.split('/').first.to_sym => model_or_ensemble }.merge!(options))
+        body = {}
+        body.merge! options
+        body[model_or_ensemble.split('/').first.to_sym] = model_or_ensemble
+        response = client.post("/#{resource_name}", {}, body)
         self.new(response) if response.success?
       end
     end

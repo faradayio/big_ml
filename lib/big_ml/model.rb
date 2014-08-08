@@ -19,7 +19,10 @@ module BigML
 
     class << self
       def create(dataset, options = {})
-        response = client.post("/#{resource_name}", options, { :dataset => dataset })
+        body = {}
+        body.merge! options
+        body[:dataset] = dataset
+        response = client.post("/#{resource_name}", {}, body)
         self.new(response) if response.success?
       end
     end
