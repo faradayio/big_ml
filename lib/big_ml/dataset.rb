@@ -16,15 +16,16 @@ module BigML
     end
 
     class << self
-      def create(source_or_dataset, options = {}, arguments = {})
-        if source_or_dataset =~ /^source/
-          arguments[:source] = source_or_dataset
-        elsif source_or_dataset =~ /^dataset/
-          arguments[:origin_dataset] = source_or_dataset
+      def create(source_or_dataset, options = {})
+        body = options.dup
+        if source_or_dataset.start_with?('source')
+          body[:source] = source_or_dataset
+        elsif source_or_dataset.start_with?('dataset')
+          body[:origin_dataset] = source_or_dataset
         else
-          raise ArgumentError, "Expected source or dataset, got #{source_or_dataset}"
+          raise ArgumentError, "Expected source or dataset, got #{source_or_dataset.inspect}"
         end
-        response = client.post("/#{resource_name}", options, arguments)
+        response = client.post("/#{resource_name}", {}, body)
         self.new(response) if response.success?
       end
     end
