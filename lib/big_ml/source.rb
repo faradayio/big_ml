@@ -15,8 +15,15 @@ module BigML
     end
 
     class << self
-      def create(file, options = {})
-        response = client.post("/#{resource_name}", options.merge(:multipart => true, :file => File.new(file)))
+      def create(file_or_url)
+        query = {}
+        body = {}
+        if file_or_url.start_with?('http')
+          body[:remote] = file_or_url
+        else
+          query.merge! multipart: true, file: File.new(file_or_url)
+        end
+        response = client.post("/#{resource_name}", query, body)
         self.new(response) if response.success?
       end
     end

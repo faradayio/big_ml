@@ -63,4 +63,17 @@ describe BigML::Source, :vcr do
       expect(dataset.code).to eq(201)
     end
   end
+
+  describe "one source from URL" do
+    let(:source) { BigML::Source.create 'https://static.bigml.com/csv/iris.csv' }
+
+    it "was created successfully" do
+      expect(source.code).to eq(201)
+    end
+
+    it "must have the correct size" do
+      source.wait_for_ready
+      expect(BigML::Source.all.first.size).to eq(4608)
+    end
+  end
 end
