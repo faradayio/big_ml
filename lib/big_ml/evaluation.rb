@@ -14,16 +14,17 @@ module BigML
     attr_reader *EVALUATION_PROPERTIES
 
     class << self
-      def create(model_or_ensemble, dataset, options = {})
-        arguments = { dataset: dataset }
+      def create(model_or_ensemble, dataset)
+        body = {}
+        body[:dataset] = dataset
         if model_or_ensemble.start_with? 'model'
-          arguments[:model] = model_or_ensemble
+          body[:model] = model_or_ensemble
         elsif model_or_ensemble.start_with? 'ensemble'
-          arguments[:ensemble] = model_or_ensemble
+          body[:ensemble] = model_or_ensemble
         else
           raise ArgumentError, "Expected model or ensemble, got #{model_or_ensemble}"
         end
-        response = client.post("/#{resource_name}", {}, arguments.merge(options))
+        response = client.post("/#{resource_name}", {}, body)
         self.new(response) if response.success?
       end
     end
