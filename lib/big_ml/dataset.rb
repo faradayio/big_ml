@@ -17,7 +17,8 @@ module BigML
 
     class << self
       def create(source_or_dataset, options = {})
-        body = options.dup
+        body = {}
+        body.merge! options
         if source_or_dataset.start_with?('source')
           body[:source] = source_or_dataset
         elsif source_or_dataset.start_with?('dataset')
