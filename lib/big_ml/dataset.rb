@@ -16,8 +16,17 @@ module BigML
     end
 
     class << self
-      def create(source, options = {})
-        response = client.post("/#{resource_name}", options, { :source => source })
+      def create(source_or_dataset, options = {})
+        body = {}
+        body.merge! options
+        if source_or_dataset.start_with?('source')
+          body[:source] = source_or_dataset
+        elsif source_or_dataset.start_with?('dataset')
+          body[:origin_dataset] = source_or_dataset
+        else
+          raise ArgumentError, "Expected source or dataset, got #{source_or_dataset.inspect}"
+        end
+        response = client.post("/#{resource_name}", {}, body)
         self.new(response) if response.success?
       end
     end
