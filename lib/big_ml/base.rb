@@ -3,6 +3,9 @@ require 'timeout'
 
 module BigML
   class Base
+    # 1 hour
+    DEFAULT_TIMEOUT = 3600
+
     attr_accessor :attrs
 
     def initialize(attrs = {})
@@ -81,7 +84,7 @@ module BigML
       # Keeps reloading resource until it is ready
       def wait_for_ready(resource, options = {})
         klass = resource.class
-        remaining = options.fetch :timeout, 60
+        remaining = options.fetch :timeout, DEFAULT_TIMEOUT
         delay = options.fetch :delay, 1
         until resource && resource.ready?
           resource = klass.find(resource.id)
