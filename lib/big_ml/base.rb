@@ -49,7 +49,7 @@ module BigML
         memo = create(*args)
         if memo.queued?
           memo.wait_for_ready
-          memo = find memo.resource
+          memo = find memo.id
         end
         raise "#{self.class.name} error:\n#{self.inspect}" unless memo.success?
         memo
