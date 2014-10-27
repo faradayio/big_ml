@@ -15,9 +15,10 @@ module BigML
     end
 
     class << self
-      def create(file_or_url)
+      def create(file_or_url, options = {})
         query = {}
         body = {}
+        body.merge! options
         if file_or_url.start_with?('http')
           body[:remote] = file_or_url
         else
