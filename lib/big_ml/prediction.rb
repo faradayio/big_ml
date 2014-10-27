@@ -17,7 +17,7 @@ module BigML
         body.merge! options
         body[model_or_ensemble.split('/').first.to_sym] = model_or_ensemble
         response = client.post("/#{resource_name}", {}, body)
-        self.new(response) if response.success?
+        self.new response
       end
     end
   end

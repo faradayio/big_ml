@@ -25,7 +25,7 @@ module BigML
           query.merge! multipart: true, file: File.new(file_or_url)
         end
         response = client.post("/#{resource_name}", query, body)
-        self.new(response) if response.success?
+        self.new response
       end
     end
   end

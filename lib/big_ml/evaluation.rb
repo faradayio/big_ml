@@ -25,7 +25,7 @@ module BigML
           raise ArgumentError, "Expected model or ensemble, got #{model_or_ensemble}"
         end
         response = client.post("/#{resource_name}", {}, body)
-        self.new(response) if response.success?
+        self.new response
       end
     end
   end

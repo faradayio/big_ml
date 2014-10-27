@@ -41,6 +41,12 @@ module BigML
     end
 
     class << self
+      def create!(*args)
+        memo = create(*args)
+        raise "#{self.class.name} error:\n#{self.inspect}" unless memo.success?
+        memo
+      end
+
       def all(options = {})
         response = client.get("/#{resource_name}", options)
         response['objects'].map { |source| self.new(source) } if response.success?

@@ -27,7 +27,7 @@ module BigML
           raise ArgumentError, "Expected source or dataset, got #{source_or_dataset.inspect}"
         end
         response = client.post("/#{resource_name}", {}, body)
-        self.new(response) if response.success?
+        self.new response
       end
     end
   end

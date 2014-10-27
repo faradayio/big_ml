@@ -28,7 +28,7 @@ module BigML
         body.merge! options
         body[:dataset] = dataset
         response = client.post("/#{resource_name}", {}, body)
-        self.new(response) if response.success?
+        self.new response
       end
     end
   end
