@@ -32,6 +32,10 @@ module BigML
       status["code"] == 5
     end
 
+    def queued?
+      status['code'] == 1
+    end
+
     def error?
       status["code"] < 0
     end
@@ -43,6 +47,10 @@ module BigML
     class << self
       def create!(*args)
         memo = create(*args)
+        if memo.queued?
+          memo.wait_for_ready
+          memo = find memo.resource
+        end
         raise "#{self.class.name} error:\n#{self.inspect}" unless memo.success?
         memo
       end
