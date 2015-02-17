@@ -14,8 +14,9 @@ module BigML
     attr_reader *EVALUATION_PROPERTIES
 
     class << self
-      def create(model_or_ensemble, dataset)
+      def create(model_or_ensemble, dataset, options = {})
         body = {}
+        body.merge! options
         body[:dataset] = dataset
         if model_or_ensemble.start_with? 'model'
           body[:model] = model_or_ensemble
